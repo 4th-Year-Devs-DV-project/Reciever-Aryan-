@@ -35,15 +35,16 @@ using namespace std;
 
     template<typename TIME>
     class Blinky {
-        using defs=blinky_defs; // putting definitions in context
         public:
+            using defs=blinky_defs; // putting definitions in context
             //Parameters to be overwriten when instantiating the atomic model
             TIME   slowToggleTime;
             TIME   fastToggleTime;
             // default constructor
             Blinky() noexcept{
-              slowToggleTime  = TIME("00:00:00:750");
-              fastToggleTime  = TIME("00:00:00:250");
+		printf("blinky");
+              slowToggleTime  = TIME("00:00:01:00");
+              //fastToggleTime  = TIME("00:00:00:50");
               state.lightOn = false;
               state.fastToggle = false;
             }
@@ -61,7 +62,7 @@ using namespace std;
 
             // internal transition
             void internal_transition() {
-              state.lightOn=!state.lightOn;
+             // state.lightOn=0;
             }
 
             // external transition
@@ -69,7 +70,8 @@ using namespace std;
               for(const auto &x : get_messages<typename defs::in>(mbs)){
                 // if(x.value == 0)
                 //   state.fastToggle = !state.fastToggle;
-                state.fastToggle = (x == 0);
+                state.lightOn = (x == 1);
+                
               }
             }
             // confluence transition
@@ -84,15 +86,16 @@ using namespace std;
               bool out;              
               out = (state.lightOn ? 1 : 0);
               get_messages<typename defs::dataOut>(bags).push_back(out);
+              printf("ligh on : %d", out);
                 
               return bags;
             }
 
             // time_advance function
             TIME time_advance() const {  
-              if(state.fastToggle)
-                return fastToggleTime;
-              else 
+              //if(state.fastToggle)
+                //return fastToggleTime;
+              //else 
                 return slowToggleTime;
             }
 

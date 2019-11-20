@@ -66,8 +66,8 @@ class Window(Frame):
     def __init__(self, master=None):
         
         # Inlitialize class variables
-        self.inputFolderPath  = ""
-        self.outputFolderPath = ""
+        self.inputFolderPath  = "inputs/BUTTON1_In.txt"
+        self.outputFolderPath = "outputs/LED1_Out.txt"
         self.loaded = False
         self.displayTime = 0
         self.stepList = []
