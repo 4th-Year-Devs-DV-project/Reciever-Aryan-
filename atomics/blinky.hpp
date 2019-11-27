@@ -34,9 +34,11 @@ using namespace std;
     };
 
     template<typename TIME>
+    
+
     class Blinky {
+      using defs=blinky_defs; // putting definitions in context
         public:
-            using defs=blinky_defs; // putting definitions in context
             //Parameters to be overwriten when instantiating the atomic model
             TIME   slowToggleTime;
             TIME   fastToggleTime;
@@ -62,7 +64,7 @@ using namespace std;
 
             // internal transition
             void internal_transition() {
-             // state.lightOn=0;
+              //state.lightOn=false;
             }
 
             // external transition
@@ -83,7 +85,7 @@ using namespace std;
             // output function
             typename make_message_bags<output_ports>::type output() const {
               typename make_message_bags<output_ports>::type bags;
-              bool out;              
+              bool out=false;              
               out = (state.lightOn ? 1 : 0);
               get_messages<typename defs::dataOut>(bags).push_back(out);
               printf("ligh on : %d", out);

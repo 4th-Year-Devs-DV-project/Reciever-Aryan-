@@ -39,15 +39,16 @@ using namespace std;
     
 struct rfid_defs {
         struct dataOut : public out_port<bool> { };
-        //struct in : public in_port<bool> { };
+        struct in : public in_port<bool> { };
 };
 
 
 template<typename TIME>
 class Rfid	 {
     
-    public:
     using defs=rfid_defs; // putting definitions in context
+    public:
+    
     //Parameters to be overwriten when instantiating the atomic model
 
 
@@ -97,7 +98,7 @@ class Rfid	 {
 */
     	//Need to provide valid I2C pins to use this sensor
  	Rfid(PinName sda, PinName scl, PinName scl2, PinName scl3, PinName scl4) {
-		slowToggleTime  = TIME("00:00:05:00");
+		slowToggleTime  = TIME("00:00:01:00");
 		//fastToggleTime  = TIME("00:00:05:00");
 		
 		state.lightOn = false;
@@ -148,8 +149,8 @@ class Rfid	 {
             state_type state;
             // ports definition
 
-            using input_ports=std::tuple<>;
-	   // using input_ports=std::tuple<typename defs::in>;
+            //using input_ports=std::tuple<>;
+	   		using input_ports=std::tuple<typename defs::in>;
             using output_ports=std::tuple<typename defs::dataOut>;
 
             // internal transition
@@ -162,7 +163,7 @@ class Rfid	 {
 	            	printf("true");
 	             if (state.temp_humid_sensor->PICC_IsNewCardPresent() )
 	             	printf("true2");
-	            for(int i =0; i <20; i++)
+	            for(int i =0; i <5; i++)
 		        {
 		            if (state.temp_humid_sensor->PICC_IsNewCardPresent() && state.temp_humid_sensor->PICC_ReadCardSerial() ) 
 		            //if (state.temp_humid_sensor->PICC_IsNewCardPresent())
@@ -195,6 +196,7 @@ class Rfid	 {
 					}
 				}	    
             }
+
 
             // external transition
             void external_transition(TIME e, typename make_message_bags<input_ports>::type mbs) {
