@@ -96,7 +96,7 @@ int main(int argc, char ** argv) {
   /********************************************/
 printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa \n");
 
-  AtomicModelPtr blinky1 = cadmium::dynamic::translate::make_dynamic_atomic_model<Blinky, TIME>("blinky1");
+  //AtomicModelPtr blinky1 = cadmium::dynamic::translate::make_dynamic_atomic_model<Blinky, TIME>("blinky1");
 
   /********************************************/
   /********** DigitalInput1 *******************/
@@ -120,12 +120,12 @@ printf("afterrrrrrrrr \n");
   /************************/
   cadmium::dynamic::modeling::Ports iports_TOP = {};
   cadmium::dynamic::modeling::Ports oports_TOP = {};
-  cadmium::dynamic::modeling::Models submodels_TOP =  {blinky1, digitalOutput1, rfid1};
+  cadmium::dynamic::modeling::Models submodels_TOP =  {rfid1, digitalOutput1};
   cadmium::dynamic::modeling::EICs eics_TOP = {};
   cadmium::dynamic::modeling::EOCs eocs_TOP = {};
   cadmium::dynamic::modeling::ICs ics_TOP = {
-    cadmium::dynamic::translate::make_IC<blinky_defs::dataOut, digitalOutput_defs::in>("blinky1","digitalOutput1"),
-    cadmium::dynamic::translate::make_IC<rfid_defs::dataOut, blinky_defs::in>("rfid1", "blinky1")
+    cadmium::dynamic::translate::make_IC<rfid_defs::dataOut, digitalOutput_defs::in>("rfid1","digitalOutput1")
+    //cadmium::dynamic::translate::make_IC<rfid_defs::dataOut, blinky_defs::in>("rfid1", "blinky1")
     //cadmium::dynamic::translate::make_IC<digitalInput_defs::out, blinky_defs::in>("rfid1", "blinky1")
   };
   CoupledModelPtr TOP = std::make_shared<cadmium::dynamic::modeling::coupled<TIME>>(

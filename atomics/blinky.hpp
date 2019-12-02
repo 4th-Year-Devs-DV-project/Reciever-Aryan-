@@ -31,6 +31,7 @@ using namespace std;
     struct blinky_defs {
         struct dataOut : public out_port<bool> { };
         struct in : public in_port<bool> { };
+        struct idIn : public in_port<float> { };
     };
 
     template<typename TIME>
@@ -44,42 +45,59 @@ using namespace std;
             TIME   fastToggleTime;
             // default constructor
             Blinky() noexcept{
-		printf("blinky");
-              slowToggleTime  = TIME("00:00:01:00");
-              //fastToggleTime  = TIME("00:00:00:50");
-              state.lightOn = false;
-              state.fastToggle = false;
+		        printf("blinky");
+            slowToggleTime  = TIME("00:00:05:00");
+            //fastToggleTime  = TIME("00:00:00:50");
+            state.lightOn = false;
+            state.fastToggle = false;
             }
             
             // state definition
             struct state_type{
               bool lightOn;
               bool fastToggle;
+              uint8_t id;
             }; 
             state_type state;
             // ports definition
 
-            using input_ports=std::tuple<typename defs::in>;
+            using input_ports=std::tuple<typename defs::in, typename defs::idIn>;
             using output_ports=std::tuple<typename defs::dataOut>;
 
             // internal transition
             void internal_transition() {
-              //state.lightOn=false;
+              printf("internal of blinky");
+              state.lightOn=false;
             }
 
             // external transition
             void external_transition(TIME e, typename make_message_bags<input_ports>::type mbs) { 
+
               for(const auto &x : get_messages<typename defs::in>(mbs)){
                 // if(x.value == 0)
                 //   state.fastToggle = !state.fastToggle;
                 state.lightOn = (x == 1);
+                if(x == 1)
+                  printf("%b", x);
                 
               }
+              printf("======================");
+              for(const auto &x : get_messages<typename defs::idIn>(mbs)){
+                // if(x.value == 0)
+                //   state.fastToggle = !state.fastToggle;
+                printf("zzzzzzz");
+                printf("%f", x);
+                
+              }
+              printf("======================");
+
             }
             // confluence transition
             void confluence_transition(TIME e, typename make_message_bags<input_ports>::type mbs) {
               internal_transition();
+              printf("in confluence");
               external_transition(TIME(), std::move(mbs));
+              //external_transition(e,  mbs);
             }
 
             // output function
