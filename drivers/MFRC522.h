@@ -154,6 +154,7 @@ public:
    * MFRC522 registers (described in chapter 9 of the datasheet).
    * When using SPI all addresses are shifted one bit left in the "SPI address byte" (section 8.1.2.3)
    */
+  //DigitalOut LedGreen (LED_GREEN);
   enum PCD_Register {
     // Page 0: Command and status
     //                0x00        // reserved for future use

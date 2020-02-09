@@ -46,7 +46,7 @@ using namespace std;
             // default constructor
             Blinky() noexcept{
 		        printf("blinky");
-            slowToggleTime  = TIME("00:00:05:00");
+            slowToggleTime  = TIME("00:00:0:50");
             //fastToggleTime  = TIME("00:00:00:50");
             state.lightOn = false;
             state.fastToggle = false;

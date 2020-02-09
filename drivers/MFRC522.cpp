@@ -4,7 +4,7 @@
 * Released into the public domain.
 */
 
-//#include "./MFRC522.h"
+#include "./MFRC522.h"
 #include "../mbed-os/mbed.h"
 //#include <cadmium/real_time/arm_mbed/embedded_error.hpp>
 
@@ -241,7 +241,7 @@ public:
                  PinName miso,
                  PinName sclk,
                  PinName cs,
-                 PinName reset)  : m_SPI(mosi, miso, sclk), m_CS(cs), m_RESET(reset)
+                 PinName reset)  : m_SPI(mosi, miso, D3), m_CS(cs), m_RESET(reset)
 {
   /* Configure SPI bus */
   //m_SPI.format(8, 0);
@@ -276,6 +276,7 @@ bool PICC_IsNewCardPresent(void)
   uint8_t bufferATQA[2];
   uint8_t bufferSize = sizeof(bufferATQA);
   uint8_t result = PICC_RequestA(bufferATQA, &bufferSize);
+  //LED_GREEN = 0;
   //return true;
   return ((result == STATUS_OK) || (result == STATUS_COLLISION));
 } // End PICC_IsNewCardPresent()
@@ -286,6 +287,7 @@ bool PICC_IsNewCardPresent(void)
 bool PICC_ReadCardSerial(void)
 {
   uint8_t result = PICC_Select(&uid);
+  //LED_GREEN = 0;
   return (result == STATUS_OK);
 } // End PICC_ReadCardSerial()
 bool dummy(void)
